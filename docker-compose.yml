@@ -1,0 +1,42 @@
+# 版本
+version: "3"
+
+# 服务
+services:
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.6.42
+    restart: always
+    hostname: mysql
+#    ports:
+#      - 3306
+    volumes:
+      - ../dev-ops-repo/mysql:/var/lib/mysql
+    environment:
+      - TZ=${TIME_ZONE}
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=discuz
+      - MYSQL_USER=discuz
+      - MYSQL_PASSWORD=discuz
+
+  # 数据库服务器：mysql
+  # 数据库名：discuz
+  # 数据库用户名：discuz
+  # 数据库密码：discuz
+  discuz:
+    container_name: discuz
+    image: registry.haitanyule.com/discuz/discuz:3.4
+    restart: always
+    hostname: discuz
+    ports:
+      - 8080:80
+    volumes:
+      - ../dev-ops-repo/discuz/config:/var/www/html/config
+      - ../dev-ops-repo/discuz/data:/var/www/html/data
+      - ../dev-ops-repo/discuz/uc_client/data:/var/www/html/uc_client/data
+      - ../dev-ops-repo/discuz/uc_server/data:/var/www/html/uc_server/data
+    environment:
+      - TZ=${TIME_ZONE}
+    depends_on:
+      - mysql
