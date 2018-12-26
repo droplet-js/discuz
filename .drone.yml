@@ -2,15 +2,11 @@ kind: pipeline
 name: default
 
 steps:
-- name: discuz
-  image: docker:git
-  commands:
-  - git clone -b master https://gitee.com/ComsenzDiscuz/DiscuzX.git discuz
-
 - name: publish
   image: plugins/docker
   settings:
     repo: v7lin/discuz
+    target: prod
     username:
       from_secret: REGISTRY_USER
     password:
